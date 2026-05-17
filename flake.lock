@@ -1,0 +1,111 @@
+{
+  "nodes": {
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1778716662,
+        "narHash": "sha256-m1Yf0wZ8j1OHjTc2UwHwyQRSnNeSgLJOd7q5Y45hzi4=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "f7c1a2d347e4c52d5fb8d10cb4d94b5884e546fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1778945272,
+        "narHash": "sha256-Aipz0UiBhE2a1FYJrNc2y+5vKWo5QVkhmaIJk3/ls+g=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "379c1f274f0fa354d012f0600806de54e79f29b5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1778737229,
+        "narHash": "sha256-6xWoytx8jFW4PF1GjRm/i/53trbpKGfz6zjzQGBr4cI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d7a713c0b7e47c908258e71cba7a2d77cc8d71d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1777168982,
+        "narHash": "sha256-GOkGPcboWE9BmGCRMLX3worL4EMnsnG8MyKmXNeYuhQ=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "f5901329dade4a6ea039af1433fb087bd9c1fe14",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "pikvm-kvmd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778975382,
+        "narHash": "sha256-XZ+3u+Gg+P86ZGDSCPNqH19ldBEis6o9VNTWV7xP8L4=",
+        "owner": "pikvm",
+        "repo": "kvmd",
+        "rev": "e562542cb7bd5b0a030c6645322e5e67caafbc43",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pikvm",
+        "repo": "kvmd",
+        "type": "github"
+      }
+    },
+    "pikvm-packages": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777755632,
+        "narHash": "sha256-MBO947FddkTSEUqX5xaL9Pl4ZXNSW+i0phS86gGLjFs=",
+        "owner": "pikvm",
+        "repo": "packages",
+        "rev": "0a17564262abfd5d7127a735b13931ffad16b6c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pikvm",
+        "repo": "packages",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-parts": "flake-parts",
+        "nixos-hardware": "nixos-hardware",
+        "nixpkgs": "nixpkgs",
+        "pikvm-kvmd": "pikvm-kvmd",
+        "pikvm-packages": "pikvm-packages"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

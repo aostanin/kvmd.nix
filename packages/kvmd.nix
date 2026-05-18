@@ -181,6 +181,14 @@ in
 
         substituteInPlace configs/nginx/kvmd.ctx-server.conf \
           --replace-quiet '/usr/share/kvmd/web' "$out/share/kvmd/web"
+
+        # kvmd-udev-hdmiusb-check enforces PiKVM's documented "use a
+        # specific USB port for the capture dongle" rule before creating
+        # kvmd-video. Point it at `true` so kvmd-video binds on any port.
+        for f in configs/os/udev/*.rules; do
+          substituteInPlace "$f" \
+            --replace-quiet /usr/bin/kvmd-udev-hdmiusb-check ${tools.true}
+        done
       '';
 
     postInstall = ''

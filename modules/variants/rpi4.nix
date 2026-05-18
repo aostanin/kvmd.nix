@@ -23,16 +23,12 @@
     }
   ];
 in {
-  hardware.raspberry-pi."4" = {
-    tc358743.enable = true;
-    dwc2 = {
-      enable = true;
-      dr_mode = "peripheral";
-    };
+  hardware.raspberry-pi."4".dwc2 = {
+    enable = true;
+    dr_mode = "peripheral";
   };
 
-  boot.kernelModules = ["dwc2" "tc358743"];
-  boot.kernelParams = ["cma=192M"];
+  boot.kernelModules = ["dwc2"];
 
   # nixos-hardware's kernel.nix ignores boot.kernelPatches; patches must
   # go through argsOverride (nixos-hardware#1745).

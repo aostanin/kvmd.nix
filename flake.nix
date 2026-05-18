@@ -20,7 +20,31 @@
   };
 
   outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} ({self, ...}: {
+    flake-parts.lib.mkFlake {inherit inputs;} ({
+      self,
+      lib,
+      ...
+    }: let
+      variants = ["v2-hdmi-rpi4" "v2-hdmiusb-rpi4"];
+
+      mkVariantModule = variant: {
+        imports = [
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          ./modules/variants/${variant}.nix
+        ];
+        _module.args.inputs = inputs;
+      };
+
+      mkVariantConfiguration = variant:
+        inputs.nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            self.nixosModules.kvmd
+            self.nixosModules.${variant}
+            ./configurations/common.nix
+          ];
+        };
+    in {
       imports = [inputs.treefmt-nix.flakeModule];
       systems = ["x86_64-linux" "aarch64-linux"];
       perSystem = {pkgs, ...}: {
@@ -39,24 +63,14 @@
           inherit (inputs) pikvm-kvmd pikvm-packages;
         };
       };
-      flake.nixosModules.kvmd = {
-        imports = [./modules/kvmd];
-        _module.args.kvmdPackages = self.packages;
-      };
-      flake.nixosModules.v2-hdmi-rpi4 = {
-        imports = [
-          inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          ./modules/v2-hdmi-rpi4.nix
-        ];
-        _module.args.inputs = inputs;
-      };
-      flake.nixosConfigurations.v2-hdmi-rpi4 = inputs.nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        modules = [
-          self.nixosModules.kvmd
-          self.nixosModules.v2-hdmi-rpi4
-          ./configurations/v2-hdmi-rpi4.nix
-        ];
-      };
+      flake.nixosModules =
+        {
+          kvmd = {
+            imports = [./modules/kvmd];
+            _module.args.kvmdPackages = self.packages;
+          };
+        }
+        // lib.genAttrs variants mkVariantModule;
+      flake.nixosConfigurations = lib.genAttrs variants mkVariantConfiguration;
     });
 }

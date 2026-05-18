@@ -14,6 +14,8 @@
   nbd,
   coreutils,
   writeText,
+  runCommand,
+  fetchurl,
   glibc,
   libxkbcommon,
   tesseract,
@@ -32,6 +34,19 @@
   fstabFile = writeText "kvmd-fstab" ''
     none /var/lib/kvmd/msd none rw,X-kvmd.otgmsd-user=kvmd 0 0
     none /var/lib/kvmd/pst none rw,X-kvmd.pst-user=kvmd-pst,X-kvmd.pst-group=kvmd-pst 0 0
+  '';
+
+  webrtcAdapter = fetchurl {
+    url = "https://raw.githubusercontent.com/webrtcHacks/adapter/v9.0.1/release/adapter.js";
+    hash = "sha256-qJ4ou0JzcZYb0z+094G11tQBAHOuYgP5G2qTTyYvzDw=";
+  };
+  # kvmd needs PiKVM's janus-gateway-pikvm 0001-js.patch on janus.js.
+  janusAssets = runCommand "kvmd-janus-assets" {} ''
+    mkdir -p $out
+    cp ${janus-gateway.src}/html/demos/janus.js $out/janus.js
+    cp ${webrtcAdapter} $out/adapter.js
+    chmod +w $out/janus.js
+    patch $out/janus.js < ${pikvm-packages}/packages/janus-gateway-pikvm/0001-js.patch
   '';
 
   # deps mirror the Arch PKGBUILD; kvmd's setup.py declares none
@@ -183,7 +198,10 @@ in
       ''}
     '';
 
-    passthru.v4l-utils = v4lUtilsCli;
+    passthru = {
+      v4l-utils = v4lUtilsCli;
+      inherit janusAssets;
+    };
 
     meta = {
       description = "The main PiKVM daemon";

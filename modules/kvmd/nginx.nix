@@ -7,19 +7,9 @@
   cfg = config.services.kvmd;
   sslDir = "/var/lib/kvmd/nginx-ssl";
 
-  # nixpkgs' janus doesn't bundle adapter.js; pin the webrtc-adapter shim janus.js needs.
-  webrtcAdapter = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/webrtcHacks/adapter/v9.0.1/release/adapter.js";
-    hash = "sha256-qJ4ou0JzcZYb0z+094G11tQBAHOuYgP5G2qTTyYvzDw=";
-  };
-  janusAssets = pkgs.runCommand "kvmd-janus-assets" {} ''
-    mkdir -p $out
-    cp ${pkgs.janus-gateway.src}/html/demos/janus.js $out/janus.js
-    cp ${webrtcAdapter} $out/adapter.js
-  '';
   ctxServerConf = pkgs.runCommand "kvmd-nginx-ctx-server.conf" {} ''
     substitute ${cfg.configsDir}/nginx/kvmd.ctx-server.conf $out \
-      --replace-quiet /usr/share/janus/javascript ${janusAssets} \
+      --replace-quiet /usr/share/janus/javascript ${cfg.package.janusAssets} \
       --replace-quiet /etc/kvmd/web.css ${cfg.webCss} \
       --replace-quiet /etc/kvmd/nginx ${cfg.configsDir}/nginx
   '';

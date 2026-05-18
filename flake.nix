@@ -36,7 +36,7 @@
           };
         };
         packages.kvmd = pkgs.callPackage ./packages/kvmd.nix {
-          inherit (inputs) pikvm-kvmd;
+          inherit (inputs) pikvm-kvmd pikvm-packages;
         };
       };
       flake.nixosModules.kvmd = {

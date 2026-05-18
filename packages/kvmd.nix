@@ -19,6 +19,8 @@
   tesseract,
   libraspberrypi,
   pikvm-kvmd,
+  pikvm-packages,
+  enableWebterm ? true,
 }: let
   python = python314;
 
@@ -160,6 +162,12 @@ in
       cp -r contrib/keymaps "$share/keymaps"
       cp -r configs "$share/configs.default"
       find "$share/web" -name '*.pug' -delete
+      ${lib.optionalString enableWebterm ''
+        # kvmd-webterm assets (ttyd "Terminal" extra) from pikvm/packages.
+        wt=${pikvm-packages}/packages/kvmd-webterm
+        install -Dm644 -t "$share/web/extras/webterm" "$wt/terminal.svg"
+        install -Dm644 -t "$share/extras/webterm" "$wt/manifest.yaml" "$wt"/nginx.ctx-*.conf
+      ''}
     '';
 
     meta = {

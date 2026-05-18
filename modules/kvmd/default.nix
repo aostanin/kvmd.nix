@@ -46,6 +46,7 @@ in {
     ./pst.nix
     ./tc358743.nix
     ./vnc.nix
+    ./webterm.nix
   ];
 
   options.services.kvmd = {
@@ -53,8 +54,10 @@ in {
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = kvmdPackages.${pkgs.stdenv.hostPlatform.system}.kvmd;
-      defaultText = lib.literalExpression "the flake's kvmd package for this system";
+      default = kvmdPackages.${pkgs.stdenv.hostPlatform.system}.kvmd.override {
+        enableWebterm = cfg.webterm.enable;
+      };
+      defaultText = lib.literalExpression "the flake's kvmd package for this system (webterm assets follow services.kvmd.webterm.enable)";
       description = "The kvmd package to use.";
     };
 

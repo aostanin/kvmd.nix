@@ -50,6 +50,10 @@
       perSystem = {pkgs, ...}: {
         treefmt.programs = {
           alejandra.enable = true;
+          mdformat = {
+            enable = true;
+            settings.wrap = 80;
+          };
           deadnix = {
             enable = true;
             no-lambda-pattern-names = true;

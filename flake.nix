@@ -43,5 +43,12 @@
         imports = [./modules/kvmd];
         _module.args.kvmdPackages = self.packages;
       };
+      flake.nixosModules.v2-hdmi-rpi4 = {
+        imports = [
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          ./modules/v2-hdmi-rpi4.nix
+        ];
+        _module.args.inputs = inputs;
+      };
     });
 }

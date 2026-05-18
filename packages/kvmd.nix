@@ -12,8 +12,8 @@
   ipmitool,
   v4l-utils,
   nbd,
-  util-linux,
   coreutils,
+  writeText,
   glibc,
   libxkbcommon,
   tesseract,
@@ -21,8 +21,18 @@
   pikvm-kvmd,
   pikvm-packages,
   enableWebterm ? true,
+  ocrLanguages ? ["eng"],
 }: let
   python = python314;
+
+  tesseractOcr = tesseract.override {enableLanguages = ocrLanguages;};
+  v4lUtilsCli = v4l-utils.override {withGUI = false;};
+
+  # kvmd's patched fstab.py reads this to discover the MSD/PST stores.
+  fstabFile = writeText "kvmd-fstab" ''
+    none /var/lib/kvmd/msd none rw,X-kvmd.otgmsd-user=kvmd 0 0
+    none /var/lib/kvmd/pst none rw,X-kvmd.pst-user=kvmd-pst,X-kvmd.pst-group=kvmd-pst 0 0
+  '';
 
   # deps mirror the Arch PKGBUILD; kvmd's setup.py declares none
   kvmdPythonDeps = ps:
@@ -83,13 +93,12 @@
     systemd-run = lib.getExe' systemd "systemd-run";
     dnsmasq = lib.getExe' dnsmasq "dnsmasq";
     ipmitool = lib.getExe' ipmitool "ipmitool";
-    v4l2-ctl = lib.getExe' v4l-utils "v4l2-ctl";
+    v4l2-ctl = lib.getExe' v4lUtilsCli "v4l2-ctl";
     nbd-client = lib.getExe' nbd "nbd-client";
-    mount = lib.getExe' util-linux "mount";
     true = lib.getExe' coreutils "true";
     libc = "${glibc}/lib/libc.so.6";
     libxkbcommon = "${libxkbcommon}/lib/libxkbcommon.so.0";
-    libtesseract = "${tesseract}/lib/libtesseract.so.5";
+    libtesseract = "${tesseractOcr}/lib/libtesseract.so.5";
   };
 in
   python.pkgs.buildPythonApplication {
@@ -129,8 +138,12 @@ in
           --replace-quiet '"/usr/bin/ipmitool"' '"${tools.ipmitool}"'
         substituteInPlace kvmd/apps/edidconf/__init__.py \
           --replace-quiet '"/usr/bin/v4l2-ctl"' '"${tools.v4l2-ctl}"'
+        # MSD/PST are plain dirs on the rw root; kvmd's only mount call is
+        # the RO/RW remount, which has nothing to toggle -> point it at true.
         substituteInPlace kvmd/helpers/remount/__init__.py \
-          --replace-quiet '"/bin/mount"' '"${tools.mount}"'
+          --replace-quiet '"/bin/mount"' '"${tools.true}"'
+        substituteInPlace kvmd/fstab.py \
+          --replace-fail 'f"{env.ETC_PREFIX}/etc/fstab"' '"${fstabFile}"'
 
         substituteInPlace configs/kvmd/main/*.yaml \
           --replace-quiet '/usr/bin/ustreamer' '${tools.ustreamer}'
@@ -143,7 +156,7 @@ in
         substituteInPlace kvmd/apps/_scheme.py \
           --replace-quiet '"/usr/share/kvmd/extras"'        "\"$out/share/kvmd/extras\"" \
           --replace-quiet '"/usr/share/kvmd/keymaps/en-us"' "\"$out/share/kvmd/keymaps/en-us\"" \
-          --replace-quiet '"/usr/share/tessdata"'           '"${tesseract}/share/tessdata"' \
+          --replace-quiet '"/usr/share/tessdata"'           '"${tesseractOcr}/share/tessdata"' \
           --replace-quiet '"/usr/bin/kvmd-helper-pst-remount"' "\"$out/bin/kvmd-helper-pst-remount\""
         substituteInPlace kvmd/plugins/msd/otg/__init__.py \
           --replace-quiet '"/usr/bin/sudo"' '"/run/wrappers/bin/sudo"' \
@@ -169,6 +182,8 @@ in
         install -Dm644 -t "$share/extras/webterm" "$wt/manifest.yaml" "$wt"/nginx.ctx-*.conf
       ''}
     '';
+
+    passthru.v4l-utils = v4lUtilsCli;
 
     meta = {
       description = "The main PiKVM daemon";

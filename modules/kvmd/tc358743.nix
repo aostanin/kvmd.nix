@@ -1,11 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.services.kvmd;
   isHdmiCsi = lib.hasInfix "-hdmi-" cfg.variant;
+  v4l2Ctl = lib.getExe' cfg.package.v4l-utils "v4l2-ctl";
 in {
   options.services.kvmd.edidHex = lib.mkOption {
     type = lib.types.path;
@@ -29,8 +29,8 @@ in {
         RemainAfterExit = true;
         Restart = "on-failure";
         RestartSec = 5;
-        ExecStart = "${pkgs.v4l-utils}/bin/v4l2-ctl --device=/dev/kvmd-video --set-edid=file=${cfg.edidHex} --info-edid";
-        ExecStop = "${pkgs.v4l-utils}/bin/v4l2-ctl --device=/dev/kvmd-video --clear-edid";
+        ExecStart = "${v4l2Ctl} --device=/dev/kvmd-video --set-edid=file=${cfg.edidHex} --info-edid";
+        ExecStop = "${v4l2Ctl} --device=/dev/kvmd-video --clear-edid";
       };
     };
   };

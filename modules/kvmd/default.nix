@@ -56,14 +56,22 @@ in {
       type = lib.types.package;
       default = kvmdPackages.${pkgs.stdenv.hostPlatform.system}.kvmd.override {
         enableWebterm = cfg.webterm.enable;
+        inherit (cfg) ocrLanguages;
       };
-      defaultText = lib.literalExpression "the flake's kvmd package for this system (webterm assets follow services.kvmd.webterm.enable)";
+      defaultText = lib.literalExpression "the flake's kvmd package for this system (webterm/OCR follow services.kvmd.{webterm.enable,ocrLanguages})";
       description = "The kvmd package to use.";
     };
 
     variant = lib.mkOption {
       type = lib.types.enum variants;
       description = "PiKVM hardware variant; selects the main config and udev rules from the package.";
+    };
+
+    ocrLanguages = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = ["eng"];
+      example = ["eng" "rus"];
+      description = "Tesseract languages bundled for kvmd's OCR.";
     };
 
     hostName = lib.mkOption {

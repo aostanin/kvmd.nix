@@ -16,7 +16,6 @@
     kvmd = {
       enable = true;
       janus.enable = true;
-      msd.enable = true;
     };
 
     openssh = {

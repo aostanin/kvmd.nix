@@ -63,7 +63,6 @@ in {
 
     variant = lib.mkOption {
       type = lib.types.enum variants;
-      default = "v2-hdmi-rpi4";
       description = "PiKVM hardware variant; selects the main config and udev rules from the package.";
     };
 

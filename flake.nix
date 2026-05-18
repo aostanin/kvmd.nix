@@ -50,5 +50,13 @@
         ];
         _module.args.inputs = inputs;
       };
+      flake.nixosConfigurations.v2-hdmi-rpi4 = inputs.nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          self.nixosModules.kvmd
+          self.nixosModules.v2-hdmi-rpi4
+          ./configurations/v2-hdmi-rpi4.nix
+        ];
+      };
     });
 }

@@ -17,9 +17,10 @@ Both build a flashable SD image and have been tested on real hardware.
 
 ## Outputs
 
-- `packages.${system}.kvmd`: the kvmd package.
-- `nixosModules.kvmd`: the daemon set (kvmd + otg/media/pst/janus/nginx and
-  optional vnc/ipmi/nbd/webterm).
+- `packages.${system}.{default,kvmd}`: the kvmd package (`default` is `kvmd`).
+- `nixosModules.{default,kvmd}`: the daemon set (kvmd +
+  otg/media/pst/janus/nginx and optional vnc/ipmi/nbd/webterm); `default` is
+  `kvmd`.
 - `nixosModules.<variant>` (`v2-hdmi-rpi4`, `v2-hdmiusb-rpi4`): the Pi 4
   hardware profile (kernel patches, dwc2, capture); sets
   `services.kvmd.variant`, so pair it with `nixosModules.kvmd`.
@@ -43,7 +44,7 @@ Or compose it into your own host:
     nixosConfigurations.mykvm = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        kvmd.nixosModules.kvmd
+        kvmd.nixosModules.default
         kvmd.nixosModules.v2-hdmi-rpi4
         {
           services.kvmd = {

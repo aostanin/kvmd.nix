@@ -56,6 +56,7 @@
           };
         };
         packages = rec {
+          default = kvmd;
           janus-assets = pkgs.callPackage ./packages/janus-assets.nix {inherit pikvm-packages;};
           kvmd = pkgs.callPackage ./packages/kvmd.nix {inherit pikvm-packages;};
           pikvm-packages = pkgs.callPackage ./packages/pikvm-packages.nix {};
@@ -63,6 +64,7 @@
       };
       flake.nixosModules =
         {
+          default = self.nixosModules.kvmd;
           kvmd = {
             imports = [./modules/kvmd];
             _module.args.kvmdPackages = self.packages;

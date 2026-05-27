@@ -30,7 +30,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          nix run github:Mic92/nix-update -- --flake --write-commit-message commit.md ${{ matrix.packages }}
+          nix run github:Mic92/nix-update -- --flake --use-update-script --write-commit-message commit.md ${{ matrix.packages }}
       - name: commit message
         id: commit-message
         run: |

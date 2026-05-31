@@ -5,9 +5,17 @@
   ...
 }: let
   cfg = config.services.kvmd;
-  yaml = pkgs.formats.yaml {};
-in {
-  options.services.kvmd.janus.enable = lib.mkEnableOption "kvmd-janus (WebRTC / H.264 video)";
+  yaml = pkgs.formats.yaml { };
+in
+{
+  options.services.kvmd.janus = {
+    enable = lib.mkEnableOption "kvmd-janus (WebRTC / H.264 video)";
+    openFirewall = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Open the WebRTC port range (UDP 20000-40000) in the firewall.";
+    };
+  };
 
   config = lib.mkIf (cfg.enable && cfg.janus.enable) {
     users.groups.kvmd-janus = {};
@@ -36,6 +44,14 @@ in {
         ];
       };
     };
+
+    networking.firewall.allowedUDPPortRanges = lib.mkIf cfg.janus.openFirewall [
+      # https://github.com/pikvm/kvmd/blob/c1dd48bd99cec08bc986d7cc2af49a50b4b1671b/configs/janus/janus.jcfg#L12
+      {
+        from = 20000;
+        to = 40000;
+      }
+    ];
 
     systemd.services.kvmd-janus = {
       description = "PiKVM - Janus WebRTC Gateway";

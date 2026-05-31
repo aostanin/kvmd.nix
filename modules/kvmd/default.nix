@@ -32,8 +32,15 @@
   mainYaml = "${configsDir}/kvmd/main/${cfg.variant}.yaml";
   overrideYaml = yaml.generate "kvmd-override.yaml" cfg.overrideConfig;
   metaYaml = yaml.generate "kvmd-meta.yaml" cfg.metaConfig;
-  testedVariants = ["v2-hdmi-rpi4"];
-in {
+  platformElements = lib.strings.splitString "-" cfg.variant;
+  platform = pkgs.writeText "platform" ''
+    PIKVM_MODEL=${builtins.elemAt platformElements 0}
+    PIKVM_VIDEO=${builtins.elemAt platformElements 1}
+    PIKVM_BOARD=${builtins.elemAt platformElements 2}
+  '';
+  testedVariants = [ "v2-hdmi-rpi4" ];
+in
+{
   imports = [
     ./ipmi.nix
     ./janus.nix
@@ -171,6 +178,7 @@ in {
     systemd.tmpfiles.rules = [
       "d /run/kvmd 0775 kvmd kvmd -"
       "L+ /usr/lib/kvmd/main.yaml - - - - ${mainYaml}"
+      "L+ /usr/lib/kvmd/platform - - - - ${platform}"
       "d /var/lib/kvmd 0755 root root -"
     ];
   };

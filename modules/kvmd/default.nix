@@ -38,9 +38,8 @@
     PIKVM_VIDEO=${builtins.elemAt platformElements 1}
     PIKVM_BOARD=${builtins.elemAt platformElements 2}
   '';
-  testedVariants = [ "v2-hdmi-rpi4" ];
-in
-{
+  testedVariants = ["v2-hdmi-rpi4"];
+in {
   imports = [
     ./ipmi.nix
     ./janus.nix

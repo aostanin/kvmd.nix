@@ -42,9 +42,12 @@
       perSystem = {pkgs, ...}: {
         treefmt.programs = {
           alejandra.enable = true;
-          mdformat = {
+          prettier = {
             enable = true;
-            settings.wrap = 80;
+            settings = {
+              proseWrap = "always";
+              printWidth = 80;
+            };
           };
           deadnix = {
             enable = true;

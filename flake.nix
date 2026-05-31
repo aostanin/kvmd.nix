@@ -1,6 +1,11 @@
 {
   description = "NixOS packaging and modules for kvmd";
 
+  nixConfig = {
+    extra-substituters = ["https://aostanin.cachix.org"];
+    extra-trusted-public-keys = ["aostanin.cachix.org-1:loDfTVc4XTxROFAPv3NKNfKzLCKEzAGj8aPKJFbRs5Q="];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";

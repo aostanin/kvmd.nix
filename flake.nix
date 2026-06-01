@@ -1,6 +1,11 @@
 {
   description = "NixOS packaging and modules for kvmd";
 
+  nixConfig = {
+    extra-substituters = ["https://aostanin.cachix.org"];
+    extra-trusted-public-keys = ["aostanin.cachix.org-1:loDfTVc4XTxROFAPv3NKNfKzLCKEzAGj8aPKJFbRs5Q="];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -42,9 +47,12 @@
       perSystem = {pkgs, ...}: {
         treefmt.programs = {
           alejandra.enable = true;
-          mdformat = {
+          prettier = {
             enable = true;
-            settings.wrap = 80;
+            settings = {
+              proseWrap = "always";
+              printWidth = 80;
+            };
           };
           deadnix = {
             enable = true;

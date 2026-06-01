@@ -5,9 +5,8 @@
   ...
 }: let
   cfg = config.services.kvmd;
-  yaml = pkgs.formats.yaml { };
-in
-{
+  yaml = pkgs.formats.yaml {};
+in {
   options.services.kvmd.janus = {
     enable = lib.mkEnableOption "kvmd-janus (WebRTC / H.264 video)";
     openFirewall = lib.mkOption {

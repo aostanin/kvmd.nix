@@ -168,11 +168,17 @@ in {
       };
     };
 
-    services.udev.extraRules = lib.concatStringsSep "\n" [
-      (builtins.readFile "${configsDir}/os/udev/common.rules")
-      (builtins.readFile "${configsDir}/os/udev/${cfg.variant}.rules")
-      ''SUBSYSTEM=="gpio", KERNEL=="gpiochip[0-9]*", GROUP="gpio", MODE="0660"''
-    ];
+    services.udev.extraRules = let
+      # PiKVM's rules call systemd-escape by its FHS path, which the nixpkgs
+      # udev-rules builder rejects (only a fixed set of /usr/bin paths get
+      # auto-rewritten). Point it at the store path instead.
+      fixupPaths = builtins.replaceStrings ["/usr/bin/systemd-escape"] ["${config.systemd.package}/bin/systemd-escape"];
+    in
+      lib.concatStringsSep "\n" [
+        (fixupPaths (builtins.readFile "${configsDir}/os/udev/common.rules"))
+        (fixupPaths (builtins.readFile "${configsDir}/os/udev/${cfg.variant}.rules"))
+        ''SUBSYSTEM=="gpio", KERNEL=="gpiochip[0-9]*", GROUP="gpio", MODE="0660"''
+      ];
 
     systemd.tmpfiles.rules = [
       "d /run/kvmd 0775 kvmd kvmd -"

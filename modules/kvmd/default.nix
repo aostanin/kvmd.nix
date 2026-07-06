@@ -169,10 +169,19 @@ in {
     };
 
     services.udev.extraRules = let
-      # PiKVM's rules call systemd-escape by its FHS path, which the nixpkgs
+      # PiKVM's rules call binaries by their FHS paths, which the nixpkgs
       # udev-rules builder rejects (only a fixed set of /usr/bin paths get
-      # auto-rewritten). Point it at the store path instead.
-      fixupPaths = builtins.replaceStrings ["/usr/bin/systemd-escape"] ["${config.systemd.package}/bin/systemd-escape"];
+      # auto-rewritten). Point them at store paths instead.
+      fixupPaths =
+        builtins.replaceStrings [
+          "/usr/bin/systemd-escape"
+          "/usr/bin/chgrp"
+          "/usr/bin/chmod"
+        ] [
+          "${config.systemd.package}/bin/systemd-escape"
+          "${pkgs.coreutils}/bin/chgrp"
+          "${pkgs.coreutils}/bin/chmod"
+        ];
     in
       lib.concatStringsSep "\n" [
         (fixupPaths (builtins.readFile "${configsDir}/os/udev/common.rules"))

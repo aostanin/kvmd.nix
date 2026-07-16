@@ -104,14 +104,14 @@
 in
   python.pkgs.buildPythonApplication (finalAttrs: {
     pname = "kvmd";
-    version = "4.184";
+    version = "4.186";
     format = "setuptools";
 
     src = fetchFromGitHub {
       owner = "pikvm";
       repo = "kvmd";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-qwMjVaAhfA7cepVepLL1ES82c/I6z1Sod8DEN16JHxk=";
+      hash = "sha256-lwavMSajE34ogGlyvZmfiPUBsHD8UDUvRV6iq0Oxy3o=";
     };
 
     propagatedBuildInputs = allPythonDeps python.pkgs;
@@ -185,7 +185,7 @@ in
     postInstall = ''
       share=$out/share/kvmd
       mkdir -p "$share"
-      cp -r web extras hid switch "$share/"
+      cp -r web extras hid firmware "$share/"
       cp -r contrib/keymaps "$share/keymaps"
       cp -r configs "$share/configs.default"
       find "$share/web" -name '*.pug' -delete

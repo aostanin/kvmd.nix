@@ -22,3 +22,8 @@ jobs:
           skipPush: ${{ github.ref != 'refs/heads/main' }}
       - run: nix flake check --print-build-logs
       - run: nix build --print-build-logs .#kvmd .#pikvm-packages .#janus-assets
+      - name: build systems (patched kernel)
+        if: github.ref == 'refs/heads/main'
+        run: nix build --print-build-logs
+          .#nixosConfigurations.v2-hdmi-rpi4.config.system.build.toplevel
+          .#nixosConfigurations.v2-hdmiusb-rpi4.config.system.build.toplevel

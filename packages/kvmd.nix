@@ -69,20 +69,12 @@
       six
       spidev
       systemd-python
+      ustreamer
       xlib
       zstandard
     ];
 
-  # ustreamer's python C-extension lives in the µStreamer tree, not nixpkgs
-  ustreamer-python = python.pkgs.buildPythonPackage {
-    pname = "ustreamer";
-    inherit (ustreamer) version src;
-    format = "setuptools";
-    sourceRoot = "${ustreamer.src.name}/python";
-    pythonImportsCheck = ["ustreamer"];
-  };
-
-  allPythonDeps = ps: kvmdPythonDeps ps ++ [ustreamer-python];
+  allPythonDeps = kvmdPythonDeps;
 
   tools = {
     ustreamer = lib.getExe ustreamer;

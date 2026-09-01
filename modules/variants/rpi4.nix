@@ -15,12 +15,20 @@
       patch = "${patchDir}/1002-pikvm-hid-remote-wakeup-support.patch";
     }
     {
+      name = "pikvm-hid-remove-string-ids";
+      patch = "${patchDir}/1003-pikvm-gadget-hid-Remove-string-IDs.patch";
+    }
+    {
       name = "pikvm-msd-inquiry-flash-cdrom";
       patch = "${patchDir}/1101-pikvm-msd-inquiry-for-flash-and-cdrom.patch";
     }
     {
       name = "pikvm-msd-dvd-support";
       patch = "${patchDir}/1102-pikvm-msd-dvd-support.patch";
+    }
+    {
+      name = "pikvm-msd-remove-string-ids";
+      patch = "${patchDir}/1103-pikvm-gadget-msd-Remove-string-IDs.patch";
     }
   ];
 in {

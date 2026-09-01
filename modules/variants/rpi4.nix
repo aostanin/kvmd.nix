@@ -7,20 +7,20 @@
   patchDir = "${kvmdPackages.${pkgs.stdenv.hostPlatform.system}.pikvm-packages}/packages/linux-rpi-pikvm";
   pikvmKernelPatches = [
     {
-      name = "pikvm-hid-remote-wakeup";
-      patch = "${patchDir}/1001-pikvm-hid-remote-wakeup-support.patch";
-    }
-    {
       name = "pikvm-hid-clean-set-report-buf";
-      patch = "${patchDir}/1002-pikvm-hid-clean-set_report_buf-on-hidg-disabling.patch";
+      patch = "${patchDir}/1001-pikvm-hid-clean-set_report_buf-on-hidg-disabling.patch";
     }
     {
-      name = "pikvm-msd-dvd-support";
-      patch = "${patchDir}/2001-pikvm-msd-dvd-support.patch";
+      name = "pikvm-hid-remote-wakeup";
+      patch = "${patchDir}/1002-pikvm-hid-remote-wakeup-support.patch";
     }
     {
       name = "pikvm-msd-inquiry-flash-cdrom";
-      patch = "${patchDir}/2002-pikvm-msd-inquiry-for-flash-and-cdrom.patch";
+      patch = "${patchDir}/1101-pikvm-msd-inquiry-for-flash-and-cdrom.patch";
+    }
+    {
+      name = "pikvm-msd-dvd-support";
+      patch = "${patchDir}/1102-pikvm-msd-dvd-support.patch";
     }
   ];
 in {

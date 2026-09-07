@@ -32,9 +32,19 @@
     }
   ];
 in {
-  hardware.raspberry-pi."4".dwc2 = {
-    enable = true;
-    dr_mode = "peripheral";
+  hardware.raspberry-pi = {
+    # nixos-hardware dropped its build-time dwc2 overlay for the stock firmware
+    # one, which the GPU applies before U-Boot. uboot.enable drops extlinux's
+    # FDTDIR so U-Boot keeps that device tree instead of reloading a bare one,
+    # and puts u-boot.bin plus config.txt on the firmware partition.
+    firmware = {
+      enable = true;
+      uboot.enable = true;
+    };
+
+    configtxt.deviceTreeOverlays.pi4 = [
+      {dwc2.dr_mode = "peripheral";}
+    ];
   };
 
   boot.kernelModules = ["dwc2"];

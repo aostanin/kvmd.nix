@@ -9,7 +9,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,14 +26,13 @@
 
       mkVariantModule = variant: {
         imports = [
-          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4.base
           ./modules/variants/${variant}.nix
         ];
-        _module.args.kvmdNixosHardware = inputs.nixos-hardware;
       };
 
       mkVariantConfiguration = variant:
-        inputs.nixpkgs.lib.nixosSystem {
+        inputs.nixos-raspberrypi.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
             self.nixosModules.kvmd

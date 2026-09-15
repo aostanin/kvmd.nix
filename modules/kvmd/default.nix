@@ -42,6 +42,7 @@
 in {
   imports = [
     ./ipmi.nix
+    ./fan.nix
     ./janus.nix
     ./kvmd.nix
     ./media.nix
@@ -49,10 +50,12 @@ in {
     ./nbd.nix
     ./nginx.nix
     ./otg.nix
+    ./oled.nix
     ./pst.nix
     ./tc358743.nix
     ./vnc.nix
     ./webterm.nix
+    ./watchdog.nix
   ];
 
   options.services.kvmd = {
@@ -62,9 +65,10 @@ in {
       type = lib.types.package;
       default = kvmdPackages.${pkgs.stdenv.hostPlatform.system}.kvmd.override {
         enableWebterm = cfg.webterm.enable;
+        enableOled = cfg.oled.enable;
         inherit (cfg) ocrLanguages;
       };
-      defaultText = lib.literalExpression "the flake's kvmd package for this system (webterm/OCR follow services.kvmd.{webterm.enable,ocrLanguages})";
+      defaultText = lib.literalExpression "the flake's kvmd package for this system (webterm/OLED/OCR follow services.kvmd.{webterm.enable,oled.enable,ocrLanguages})";
       description = "The kvmd package to use.";
     };
 

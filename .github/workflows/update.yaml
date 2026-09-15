@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        packages: ["kvmd", "pikvm-packages"]
+        packages: ["kvmd", "kvmd-fan", "pikvm-packages"]
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31

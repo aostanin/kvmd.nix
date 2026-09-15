@@ -22,6 +22,7 @@
   libraspberrypi,
   pikvm-packages,
   enableWebterm ? true,
+  enableOled ? false,
   ocrLanguages ? ["eng"],
 }: let
   python = python314;
@@ -49,6 +50,7 @@
       libgpiod
       mako
       netifaces
+      paramiko
       passlib
       pillow
       psutil
@@ -58,6 +60,7 @@
       pyrad
       pyserial
       pyserial-asyncio
+      pysmbc
       pyudev
       pyusb
       python-ldap
@@ -74,7 +77,9 @@
       zstandard
     ];
 
-  allPythonDeps = kvmdPythonDeps;
+  allPythonDeps = ps:
+    kvmdPythonDeps ps
+    ++ lib.optional enableOled (ps.callPackage ./luma-oled.nix {});
 
   tools = {
     ustreamer = lib.getExe ustreamer;
@@ -108,7 +113,9 @@ in
 
     propagatedBuildInputs = allPythonDeps python.pkgs;
 
-    pythonImportsCheck = ["kvmd" "kvmd.apps.kvmd"];
+    pythonImportsCheck =
+      ["kvmd" "kvmd.apps.kvmd" "kvmd.apps.nbd" "kvmd.plugins.ugpio.ezcoo"]
+      ++ lib.optional enableOled "kvmd.apps.oled";
 
     postPatch =
       ''

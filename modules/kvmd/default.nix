@@ -41,21 +41,21 @@
   testedVariants = ["v2-hdmi-rpi4"];
 in {
   imports = [
-    ./ipmi.nix
     ./fan.nix
+    ./ipmi.nix
     ./janus.nix
     ./kvmd.nix
     ./media.nix
     ./msd.nix
     ./nbd.nix
     ./nginx.nix
-    ./otg.nix
     ./oled.nix
+    ./otg.nix
     ./pst.nix
     ./tc358743.nix
     ./vnc.nix
-    ./webterm.nix
     ./watchdog.nix
+    ./webterm.nix
   ];
 
   options.services.kvmd = {

@@ -179,7 +179,7 @@ HAT's reserved GPIOs and jumpers as documented in the
 
 ### Kernel patch provenance
 
-The V3 profile applies eleven unmodified patches from the pinned
+All three Pi 4 profiles share eleven unmodified patches from the pinned
 [`pikvm/packages` kernel package](https://github.com/pikvm/packages/tree/0ba34d3d6e0933c6b5dbecf00466f3e191e8bbd8/packages/linux-rpi-pikvm).
 PiKVM OS applies these same patches; they are not local V3 inventions.
 The pinned nixos-raspberrypi 6.18.34 kernel does not include them. All eleven
@@ -193,10 +193,11 @@ apply to its original source without offsets or fuzz.
 | 1401      | Unprivileged NBD operations, read-only handling and disconnect/status support |
 | 1501–1502 | HDMI capture lane diagnostics and corrected bandwidth arithmetic              |
 
-The first six were already used by the V2 profiles. The additional five support
-V3's exposed features and PiKVM behavior; they are not all required merely to
-boot the board. Recheck this selection whenever the kernel or PiKVM package pin
-changes, and drop patches when their behavior is supplied upstream.
+Sharing the patches follows PiKVM OS and lets all three profiles use one kernel
+build and cache entry. They provide USB, NBD and HDMI behavior; they are not all
+required merely to boot the board. Recheck this selection whenever the kernel
+or PiKVM package pin changes, and drop patches when their behavior is supplied
+upstream.
 
 ### Migrating an existing installation
 

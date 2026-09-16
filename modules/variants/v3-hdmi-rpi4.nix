@@ -55,5 +55,4 @@
   };
   boot.kernelModules = ["i2c-dev" "i2c-bcm2835" "rtc-pcf8563"];
   boot.kernelParams = ["console=ttyAMA0,115200"];
-  time.hardwareClockInLocalTime = false;
 }

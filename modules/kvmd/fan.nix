@@ -39,7 +39,6 @@ in {
         Type = "simple";
         Restart = "always";
         RestartSec = 3;
-        # WiringPi maps the Pi's PWM registers through /dev/mem.
         ExecStart = "${lib.getExe cfg.fan.package} --config=${cfg.fan.configFile}";
         TimeoutStopSec = 3;
       };

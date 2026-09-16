@@ -181,9 +181,9 @@ HAT's reserved GPIOs and jumpers as documented in the
 
 All three Pi 4 profiles share eleven unmodified patches from the pinned
 [`pikvm/packages` kernel package](https://github.com/pikvm/packages/tree/0ba34d3d6e0933c6b5dbecf00466f3e191e8bbd8/packages/linux-rpi-pikvm).
-PiKVM OS applies these same patches; they are not local V3 inventions.
-The pinned nixos-raspberrypi 6.18.34 kernel does not include them. All eleven
-apply to its original source without offsets or fuzz.
+PiKVM OS applies these same patches; they are not local V3 inventions. The
+pinned nixos-raspberrypi 6.18.34 kernel does not include them. All eleven apply
+to its original source without offsets or fuzz.
 
 | Patches   | Purpose                                                                       |
 | --------- | ----------------------------------------------------------------------------- |
@@ -195,16 +195,16 @@ apply to its original source without offsets or fuzz.
 
 Sharing the patches follows PiKVM OS and lets all three profiles use one kernel
 build and cache entry. They provide USB, NBD and HDMI behavior; they are not all
-required merely to boot the board. Recheck this selection whenever the kernel
-or PiKVM package pin changes, and drop patches when their behavior is supplied
+required merely to boot the board. Recheck this selection whenever the kernel or
+PiKVM package pin changes, and drop patches when their behavior is supplied
 upstream.
 
 ### Migrating an existing installation
 
-The new base mounts its firmware partition at `/boot/firmware` and creates a
-1 GiB firmware partition for new images. Before deploying over an older image,
-check its partition layout, free space and bootloader migration requirements;
-a successful build alone does not validate an in-place boot migration.
+The new base mounts its firmware partition at `/boot/firmware` and creates a 1
+GiB firmware partition for new images. Before deploying over an older image,
+check its partition layout, free space and bootloader migration requirements; a
+successful build alone does not validate an in-place boot migration.
 
 ### V3 validation checklist
 
@@ -212,8 +212,8 @@ V3 has been deployed in place and rebooted with the nixos-raspberrypi base
 (kernel 6.18.34, kvmd 4.215). Ethernet/SSH and the dashboard responded; the fan
 reported healthy with no errors or restarts during the post-boot observation.
 The capture device and RTC were detected, and the OLED and watchdog services
-were active. These checks do not establish full peripheral operation.
-Before relying on remote access:
+were active. These checks do not establish full peripheral operation. Before
+relying on remote access:
 
 - Boot with Ethernet and verify local/serial recovery and the DHCP address.
 - Check `/dev/kvmd-video`, EDID and DV timings; test HDMI hotplug, MJPEG and

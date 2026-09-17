@@ -22,7 +22,7 @@
       lib,
       ...
     }: let
-      variants = ["v2-hdmi-rpi4" "v2-hdmiusb-rpi4"];
+      variants = ["v2-hdmi-rpi4" "v2-hdmiusb-rpi4" "v3-hdmi-rpi4"];
 
       mkVariantModule = variant: {
         imports = [
@@ -66,6 +66,7 @@
           default = kvmd;
           janus-assets = pkgs.callPackage ./packages/janus-assets.nix {inherit pikvm-packages;};
           kvmd = pkgs.callPackage ./packages/kvmd.nix {inherit pikvm-packages;};
+          kvmd-fan = pkgs.callPackage ./packages/kvmd-fan.nix {};
           pikvm-packages = pkgs.callPackage ./packages/pikvm-packages.nix {};
         };
       };

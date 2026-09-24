@@ -53,6 +53,7 @@ in {
     ./otg.nix
     ./pst.nix
     ./tc358743.nix
+    ./ustreamer-compat.nix
     ./vnc.nix
     ./watchdog.nix
     ./webterm.nix

@@ -198,6 +198,8 @@ in
 
     passthru = {
       v4l-utils = v4lUtilsCli;
+      # The streamer binary kvmd execs, from this flake's nixpkgs rather than the consumer's
+      inherit ustreamer;
       updateScript = nix-update-script {extraArgs = ["--flake"];};
     };
 

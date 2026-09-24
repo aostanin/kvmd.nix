@@ -38,7 +38,7 @@ in {
           "--configs-folder=/etc/kvmd/janus"
         ];
         cmd_append = [
-          "--plugins-folder=${pkgs.ustreamer}/lib/ustreamer/janus"
+          "--plugins-folder=${cfg.package.ustreamer}/lib/ustreamer/janus"
           "--configs-folder=${cfg.configsDir}/janus"
         ];
       };

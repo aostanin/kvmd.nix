@@ -5,13 +5,13 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "pikvm-packages";
-  version = "0-unstable-2026-10-03";
+  version = "0-unstable-2026-10-07";
 
   src = fetchFromGitHub {
     owner = "pikvm";
     repo = "packages";
-    rev = "272d2baa3be6c9b571059bee2dee6faf0eeb4c87";
-    hash = "sha256-BOFTUFtOsXmLd4FlShEY/43QwaF2WXAWn7UiKMshwOI=";
+    rev = "9dafa045316a2907819561d03fcb23314e274dbb";
+    hash = "sha256-qR0ELsJ/mtLa8WvI0cf+T1FQ3/kT3+mQpdb3u/hS8o4=";
   };
 
   dontConfigure = true;

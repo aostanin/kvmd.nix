@@ -14,6 +14,7 @@
       "1001-pikvm-hid-clean-set_report_buf-on-hidg-disabling"
       "1002-pikvm-hid-remote-wakeup-support"
       "1003-pikvm-gadget-hid-Remove-string-IDs"
+      "1004-pikvm-gadget-hid-Revert-usb-gadget-f_hid-Fix-zero-le"
       "1101-pikvm-msd-inquiry-for-flash-and-cdrom"
       "1102-pikvm-msd-dvd-support"
       "1103-pikvm-gadget-msd-Remove-string-IDs"

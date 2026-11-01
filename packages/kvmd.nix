@@ -101,14 +101,14 @@
 in
   python.pkgs.buildPythonApplication (finalAttrs: {
     pname = "kvmd";
-    version = "4.229";
+    version = "4.234";
     format = "setuptools";
 
     src = fetchFromGitHub {
       owner = "pikvm";
       repo = "kvmd";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-do8KRqZV8ybHgQcESPPyAF1F6nzehT3cVkhtE40nEtQ=";
+      hash = "sha256-1Z8GYnJJQKonTWF6ATJHxwIZVKPKJ0csnxSCSREH7rI=";
     };
 
     propagatedBuildInputs = allPythonDeps python.pkgs;

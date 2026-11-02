@@ -20,6 +20,7 @@
   libxkbcommon,
   tesseract,
   libraspberrypi,
+  libnfs,
   pikvm-packages,
   enableWebterm ? true,
   enableOled ? false,
@@ -97,18 +98,20 @@
     libc = "${glibc}/lib/libc.so.6";
     libxkbcommon = "${libxkbcommon}/lib/libxkbcommon.so.0";
     libtesseract = "${tesseractOcr}/lib/libtesseract.so.5";
+    # nixpkgs ships no libnfs.so.<major> symlink
+    libnfs = "${libnfs}/lib/libnfs.so";
   };
 in
   python.pkgs.buildPythonApplication (finalAttrs: {
     pname = "kvmd";
-    version = "4.229";
+    version = "4.234";
     format = "setuptools";
 
     src = fetchFromGitHub {
       owner = "pikvm";
       repo = "kvmd";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-do8KRqZV8ybHgQcESPPyAF1F6nzehT3cVkhtE40nEtQ=";
+      hash = "sha256-1Z8GYnJJQKonTWF6ATJHxwIZVKPKJ0csnxSCSREH7rI=";
     };
 
     propagatedBuildInputs = allPythonDeps python.pkgs;
@@ -126,6 +129,8 @@ in
           --replace-fail 'ctypes.util.find_library("xkbcommon")' '"${tools.libxkbcommon}"'
         substituteInPlace kvmd/apps/kvmd/ocr.py \
           --replace-fail 'ctypes.util.find_library("tesseract")' '"${tools.libtesseract}"'
+        substituteInPlace kvmd/nbd/remotes/_nfs.py \
+          --replace-fail 'ctypes.util.find_library("nfs")' '"${tools.libnfs}"'
 
         substituteInPlace kvmd/apps/_scheme.py \
           --replace-quiet '"/usr/bin/ip"'          '"${tools.ip}"' \

@@ -33,6 +33,8 @@ in {
         TimeoutStopSec = 5;
         User = "kvmd-nbd";
         Group = "kvmd-nbd";
+        # libnfs binds a privileged source port for exports with `secure`
+        AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         ExecStart = "${lib.getExe' cfg.package "kvmd-nbd"} --run";
       };
     };

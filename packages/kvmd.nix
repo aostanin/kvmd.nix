@@ -182,7 +182,7 @@ in
         # kvmd-video. Point it at `true` so kvmd-video binds on any port.
         for f in configs/os/udev/*.rules; do
           substituteInPlace "$f" \
-            --replace-quiet /usr/bin/kvmd-udev-hdmiusb-check ${tools.true}
+            --replace-quiet /usr/lib/kvmd/kvmd-udev-hdmiusb-check ${tools.true}
         done
       '';
 
